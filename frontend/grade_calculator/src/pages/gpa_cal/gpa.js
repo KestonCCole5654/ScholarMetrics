@@ -7,8 +7,7 @@ export default function GPACalculator() {
     const [gpa, setGPA] = useState(null);
     const [error, setError] = useState(null);
     const [gpaScale, setGpaScale] = useState("4.0");
-    const apiUrl = "https://studentmetrics-oh2tbodsp-keston-c-coles-projects.vercel.app"; // Replace with your production backend URL
-
+    const apiUrl = "http://localhost:5000"; // Adjust this for production
 
     const addCourse = () => {
         setCourses([...courses, { name: "", credits: 0, grade: "" }]);
@@ -35,7 +34,6 @@ export default function GPACalculator() {
                 course.credits,
             ]);
 
-            // Use the apiUrl variable in the request
             const response = await axios.post(`${apiUrl}/calculate-gpa`, {
                 grades,
                 scale: gpaScale
@@ -51,19 +49,14 @@ export default function GPACalculator() {
     return (
         <div className="min-h-screen text-white px-4 py-8 md:px-6 md:py-12">
             <div className="max-w-4xl mx-auto space-y-6">
-                {/* Header */}
                 <h1 className="text-2xl md:text-3xl font-bold text-center">Grade Point Average Calculator</h1>
 
-                {/* Error Handling */}
                 {error && (
                     <div className="bg-red-500 text-white p-4 rounded">
                         <p>Error: {error}</p>
                     </div>
                 )}
 
-
-
-                {/* GPA Result */}
                 {gpa !== null && (
                     <div className="p-6 bg-orange-500 rounded text-center">
                         <h2 className="text-xl md:text-2xl font-semibold">Your GPA</h2>
@@ -71,12 +64,8 @@ export default function GPACalculator() {
                     </div>
                 )}
 
-                {/* GPA Scale Input */}
                 <div className="bg-gray-800 rounded-lg p-4 md:p-6">
                     <h2 className="text-xl md:text-2xl font-semibold mb-4">GPA Scale</h2>
-                    <p className="text-gray-400 mb-6 text-sm md:text-base">
-                        Please select your college/university gpa scale for more accurate calculations
-                    </p>
                     <div className="flex items-center space-x-4">
                         <label htmlFor="gpaScale" className="text-sm text-gray-400">Select your GPA scale:</label>
                         <select
@@ -92,15 +81,8 @@ export default function GPACalculator() {
                     </div>
                 </div>
 
-
-
-                {/* Course Form */}
                 <div className="bg-gray-800 rounded-lg p-4 md:p-6">
                     <h2 className="text-xl md:text-2xl font-semibold">Enter Your Courses</h2>
-                    <p className="text-gray-400 mb-6 text-sm md:text-base">
-                        Add your courses, credits, and grades. Grades can be A, A-, B+, etc.
-                    </p>
-
                     <div className="space-y-4">
                         {courses.map((course, index) => (
                             <div key={index} className="space-y-3 pb-4 border-b border-gray-700 last:border-0">
@@ -167,8 +149,6 @@ export default function GPACalculator() {
                     </div>
                 </div>
 
-
-                {/* Course Summary */}
                 <div className="bg-gray-800 rounded-lg p-4 md:p-6">
                     <h2 className="text-xl md:text-2xl font-semibold mb-4">Course Summary</h2>
                     {courses.some((course) => course.name || course.credits || course.grade) ? (
@@ -184,16 +164,16 @@ export default function GPACalculator() {
                                 <tbody>
                                     {courses.map((course, index) => (
                                         <tr key={index} className="border-b border-gray-700">
-                                            <td className="px-6 py-4 font-medium">{course.name || "Untitled Course"}</td>
-                                            <td className="px-6 py-4">{course.credits || "N/A"}</td>
-                                            <td className="px-6 py-4">{course.grade || "N/A"}</td>
+                                            <td className="px-6 py-4">{course.name}</td>
+                                            <td className="px-6 py-4">{course.credits}</td>
+                                            <td className="px-6 py-4">{course.grade}</td>
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                         </div>
                     ) : (
-                        <div className="text-center text-gray-400 py-4">No courses added yet.</div>
+                        <p className="text-gray-400">No courses added yet.</p>
                     )}
                 </div>
             </div>

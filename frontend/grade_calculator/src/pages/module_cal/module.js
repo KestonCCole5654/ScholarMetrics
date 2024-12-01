@@ -10,9 +10,7 @@ export default function ModuleGradeCalculator() {
     const [isUploading, setIsUploading] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [moduleName, setModuleName] = useState("");
-    const [gpaScale, setGpaScale] = useState(4.0);
   
-
 
     const addAssessment = () => {
         setAssessments([...assessments, { name: "", weight: 0, grade: "" }]);
@@ -57,6 +55,32 @@ export default function ModuleGradeCalculator() {
         multiple: false,
     });
 
+    const calculateGrade = async () => {
+        setError(null);
+        setFinalGrade(null);
+    
+        try {
+            const response = await fetch('http://localhost:5000/calculate-grade', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ assessments }),
+            });
+    
+            const data = await response.json();
+    
+            if (response.ok) {
+                setFinalGrade(`${data.final_grade}%`); // Add the percentage symbol here
+            } else {
+                setError(data.error || "An error occurred while calculating the grade.");
+            }
+        } catch (error) {
+            setError("Failed to connect to the server.");
+        }
+    };
+    
+
     return (
         <div className="min-h-screen text-white px-4 py-8 md:px-6 md:py-12">
             <div className="max-w-4xl mx-auto space-y-6">
@@ -74,7 +98,7 @@ export default function ModuleGradeCalculator() {
                 {finalGrade !== null && (
                     <div className="p-6 bg-orange-500 rounded text-center">
                         <h2 className="text-xl md:text-2xl font-semibold">{moduleName || "Module Grade"}</h2>
-                        <p className="text-3xl md:text-4xl font-bold mt-2 text-white">{finalGrade}%</p>
+                        <p className="text-3xl md:text-4xl font-bold mt-2 text-white">{finalGrade}</p>
                     </div>
                 )}
 
@@ -112,26 +136,6 @@ export default function ModuleGradeCalculator() {
                     </div>
                 </div>
 
-                {/* GPA Scale Input */}
-                <div className="bg-gray-800 rounded-lg p-4 md:p-6">
-                    <h2 className="text-xl md:text-2xl font-semibold mb-4">GPA Scale</h2>
-                    <p className="text-gray-400 mb-6 text-sm md:text-base">
-                        Please select your college/university gpa scale for more accurate calculations
-                    </p>
-                    <div className="flex items-center space-x-4">
-                        <label htmlFor="gpaScale" className="text-sm text-gray-400">Select your GPA scale:</label>
-                        <select
-                            id="gpaScale"
-                            value={gpaScale}
-                            onChange={(e) => setGpaScale(e.target.value)}
-                            className="bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white"
-                        >
-                            <option value="4.0">4.0 scale</option>
-                            <option value="4.3">4.3 scale</option>
-                            <option value="5.0">5.0 scale</option>
-                        </select>
-                    </div>
-                </div>
 
                 {/* Assessment Form */}
                 <div className="bg-gray-800 rounded-lg p-4 md:p-6">
@@ -208,6 +212,7 @@ export default function ModuleGradeCalculator() {
                             <Plus className="h-4 w-4 mr-2" /> Add Assessment
                         </button>
                         <button
+                            onClick={calculateGrade}
                             className="bg-orange-500 text-black px-4 py-2 rounded-md hover:bg-orange-600 flex-1 md:flex-none"
                         >
                             Calculate Grade
@@ -243,6 +248,8 @@ export default function ModuleGradeCalculator() {
                         <div className="text-center text-gray-400 py-4">No assessments added yet.</div>
                     )}
                 </div>
+
+
             </div>
         </div>
     );
