@@ -157,7 +157,7 @@ export function Header() {
             isMobileMenuOpen ? 'block' : 'hidden'
           }`}
         >
-          <a href="/" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Home</a>
+          <a href="/home" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Home</a>
           <a href="/calculators" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Calculators</a>
           <a href="/reports" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Reports</a>
           <a href="/about" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">About</a>

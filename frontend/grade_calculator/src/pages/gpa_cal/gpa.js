@@ -7,6 +7,8 @@ export default function GPACalculator() {
     const [gpa, setGPA] = useState(null);
     const [error, setError] = useState(null);
     const [gpaScale, setGpaScale] = useState("4.0");
+    const apiUrl = "https://studentmetrics-oh2tbodsp-keston-c-coles-projects.vercel.app"; // Replace with your production backend URL
+
 
     const addCourse = () => {
         setCourses([...courses, { name: "", credits: 0, grade: "" }]);
@@ -32,12 +34,13 @@ export default function GPACalculator() {
                 course.grade.toUpperCase(),
                 course.credits,
             ]);
-    
-            const response = await axios.post("http://localhost:5000/calculate-gpa", {
+
+            // Use the apiUrl variable in the request
+            const response = await axios.post(`${apiUrl}/calculate-gpa`, {
                 grades,
-                scale: gpaScale  // This will now be a string
+                scale: gpaScale
             });
-    
+
             setGPA(response.data.gpa);
             setError(null);
         } catch (err) {
@@ -164,7 +167,7 @@ export default function GPACalculator() {
                     </div>
                 </div>
 
-                
+
                 {/* Course Summary */}
                 <div className="bg-gray-800 rounded-lg p-4 md:p-6">
                     <h2 className="text-xl md:text-2xl font-semibold mb-4">Course Summary</h2>

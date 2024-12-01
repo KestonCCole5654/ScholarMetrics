@@ -140,7 +140,7 @@ export default function WelcomePage() {
               fast and efficient.
             </h2>
             <p className="text-gray-400 text-lg">
-              Get your results in minutes, not hours. Here's how quickly you can use our features:
+              Get your results in minutes, not hours. Here's how some of our features:
             </p>
           </div>
           

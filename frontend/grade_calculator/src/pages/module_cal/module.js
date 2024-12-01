@@ -11,6 +11,8 @@ export default function ModuleGradeCalculator() {
     const [uploadSuccess, setUploadSuccess] = useState(false);
     const [moduleName, setModuleName] = useState("");
     const [gpaScale, setGpaScale] = useState(4.0);
+  
+
 
     const addAssessment = () => {
         setAssessments([...assessments, { name: "", weight: 0, grade: "" }]);
