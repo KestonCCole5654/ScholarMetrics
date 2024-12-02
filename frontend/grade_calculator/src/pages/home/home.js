@@ -10,19 +10,13 @@ export default function WelcomePage() {
       id: 'gpa',
       name: 'GPA - Grade Point Average Calculator',
       description: 'Calculate your overall GPA based on your course grades and credit hours. Supports both weighted and unweighted GPA calculations.',
-      link: '/gpa-calculator'
+      link: '/gpa'
     },
     {
       id: 'weighted',
       name: 'WGC - Weighted Grade Calculator',
       description: 'Determine your final grade by factoring in the weight of different assignments, tests, and projects in your course.',
-      link: '/weighted-grade'
-    },
-    {
-      id: 'final',
-      name: 'FGC - Final Grade Calculator',
-      description: 'Predict your final grade based on your current grades and upcoming assignments. Plan what you need to achieve your desired grade.',
-      link: '/final-grade'
+      link: '/module'
     }
   ];
 
