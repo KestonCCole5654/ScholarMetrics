@@ -9,7 +9,7 @@ export default function WelcomePage() {
     {
       id: 'gpa',
       name: 'GPA - Grade Point Average Calculator',
-      description: 'Calculate your overall GPA based on your course grades and credit hours. Supports both weighted and unweighted GPA calculations.',
+      description: 'Calculate your overall GPA based on your course grades and credits.',
       link: '/gpa'
     },
     {
@@ -23,42 +23,42 @@ export default function WelcomePage() {
   const features = [
     {
       icon: <Calculator className="w-6 h-6 text-white" />,
-      time: '2 min',
+      time: 'Available',
       name: 'GPA Calculation'
     },
     {
       icon: <BookOpen className="w-6 h-6 text-white" />,
-      time: '1 min',
+      time: 'In Development',
       name: 'Course Tracking'
     },
     {
       icon: <GraduationCap className="w-6 h-6 text-white" />,
-      time: '3 min',
+      time: 'In Development',
       name: 'Grade Prediction'
     },
     {
       icon: <LineChart className="w-6 h-6 text-white" />,
-      time: '2 min',
-      name: 'Progress Analysis'
+      time: 'In Development',
+      name: 'Course Outline Upload'
     },
     {
       icon: <Clock className="w-6 h-6 text-white" />,
-      time: '1 min',
-      name: 'Quick Results'
+      time: 'Available',
+      name: 'Module Calculator'
     },
     {
       icon: <Calendar className="w-6 h-6 text-white" />,
-      time: '2 min',
+      time: 'In Development',
       name: 'Semester Planning'
     },
     {
       icon: <Target className="w-6 h-6 text-white" />,
-      time: '1 min',
+      time: 'In Development',
       name: 'Goal Setting'
     },
     {
       icon: <Settings className="w-6 h-6 text-white" />,
-      time: '2 min',
+      time: 'Available',
       name: 'Grade Weighting'
     }
   ];
@@ -73,9 +73,9 @@ export default function WelcomePage() {
         {/* Welcome Section */}
         <div className="text-center space-y-4">
           <h1 className="text-3xl font-bold flex items-center justify-center gap-2">
-            Welcome to ScholarMetrics. 
+            Welcome to ScholarMetrics
           </h1>
-          <button className="bg-orange-500 hover:bg-orange-600 text-white font-medium px-6 py-2.5 rounded-lg transition-colors">
+          <button className="bg-orange-500  hover:bg-orange-600 text-white font-medium px-5 py-2.5  transition-colors">
             Select a Calculator Below to Get Started
           </button>
         </div>
@@ -117,7 +117,8 @@ export default function WelcomePage() {
               fast and efficient.
             </h2>
             <p className="text-gray-400 text-lg">
-              Get your results in minutes, not hours. Here's how quickly you can use our features:
+            <br/>
+              Get your results in minutes, not hours. <br/> Here are some features available and will be made available soon:
             </p>
           </div>
           
@@ -125,7 +126,7 @@ export default function WelcomePage() {
             {features.map((feature, index) => (
               <div 
                 key={index}
-                className=" p-4 bg-[#1a202c] rounded-xl space-y-4 hover:bg-[#2d3748] transition-colors"
+                className=" p-4 bg-[#1a202c] rounded-md space-y-4 hover:bg-[#2d3748] transition-colors"
               >
                 <div className="flex  justify-between items-start">
                   {feature.icon}

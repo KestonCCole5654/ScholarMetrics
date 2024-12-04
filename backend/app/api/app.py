@@ -1,4 +1,6 @@
+
 import os
+from typing import List, Dict, Union
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -8,6 +10,7 @@ from flask_cors import CORS
 from api.gpa import gpa
 import pandas as pd
 from datetime import datetime
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -25,6 +28,7 @@ app = Flask(__name__)
 app.config.from_object(Config)  # Apply configurations
 CORS(app)  # Enable CORS for all domains (restrict in production as needed)
 
+
 # Initialize extensions
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
@@ -41,6 +45,23 @@ class User(db.Model):
         self.username = username
         self.email = email
         self.password = generate_password_hash(password)
+
+# Define a mapping for letter grades to numeric equivalents
+LETTER_GRADE_MAPPING = {
+    "A+": 97,
+    "A": 93,
+    "A-": 90,
+    "B+": 87,
+    "B": 83,
+    "B-": 80,
+    "C+": 77,
+    "C": 73,
+    "C-": 70,
+    "D+": 67,
+    "D": 63,
+    "D-": 60,
+    "F": 0
+}
 
 # Health check endpoint
 @app.route('/', methods=['GET'])
@@ -127,26 +148,7 @@ def calculate_gpa_endpoint():
     except Exception as e:
         return jsonify({"error": str(e)}), 400
 
-
-
-
-# Define a mapping for letter grades to numeric equivalents
-LETTER_GRADE_MAPPING = {
-    "A+": 97,
-    "A": 93,
-    "A-": 90,
-    "B+": 87,
-    "B": 83,
-    "B-": 80,
-    "C+": 77,
-    "C": 73,
-    "C-": 70,
-    "D+": 67,
-    "D": 63,
-    "D-": 60,
-    "F": 0
-}
-
+# calculate grade upload endpoint
 @app.route('/calculate-grade', methods=['POST'])
 def calculate_grade():
     try:
@@ -213,6 +215,180 @@ def upload_syllabus():
         return jsonify({"grades": grades})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+
+
+
+##########################################################################################################
+def letter_to_grade_point(letter: str) -> float:
+    """
+    Converts a letter grade to its corresponding grade point.
+    """
+    grade_scale = {
+        "A+": 4.0, "A": 4.0, "A-": 3.7,
+        "B+": 3.3, "B": 3.0, "B-": 2.7,
+        "C+": 2.3, "C": 2.0, "C-": 1.7,
+        "D+": 1.3, "D": 1.0, "D-": 0.7,
+        "F": 0.0
+    }
+    return grade_scale.get(letter, None)  # Return None if the grade is invalid
+
+
+def grade_point_to_letter(grade_point: float) -> str:
+    """
+    Converts a grade point to its closest letter grade.
+    """
+    if grade_point >= 4.0:
+        return "A+"
+    elif grade_point >= 3.7:
+        return "A-"
+    elif grade_point >= 3.3:
+        return "B+"
+    elif grade_point >= 3.0:
+        return "B"
+    elif grade_point >= 2.7:
+        return "B-"
+    elif grade_point >= 2.3:
+        return "C+"
+    elif grade_point >= 2.0:
+        return "C"
+    elif grade_point >= 1.7:
+        return "C-"
+    elif grade_point >= 1.3:
+        return "D+"
+    elif grade_point >= 1.0:
+        return "D"
+    elif grade_point >= 0.7:
+        return "D-"
+    else:
+        return "F"
+
+
+def calculate_gpa(courses: List[Dict[str, any]]) -> float:
+    """
+    Calculate GPA from a list of courses with existing grades.
+    """
+    # Filter out courses without grades
+    graded_courses = [course for course in courses if 'grade' in course and course['grade']]
+    
+    if not graded_courses:
+        return 0.0
+    
+    total_credits = sum(course['credits'] for course in graded_courses)
+    total_grade_points = sum(
+        letter_to_grade_point(course['grade']) * course['credits'] 
+        for course in graded_courses
+    )
+    
+    return total_grade_points / total_credits if total_credits > 0 else 0
+
+
+def calculate_grade_requirements(
+    courses: List[Dict[str, any]], 
+    current_gpa: float, 
+    desired_gpa: float
+) -> Union[str, List[Dict[str, any]]]:
+    """
+    Calculate grade requirements for courses to achieve desired GPA.
+    
+    Args:
+    - courses: Courses with or without grades
+    - current_gpa: Current overall GPA
+    - desired_gpa: Target GPA
+    
+    Returns:
+    - List of grade requirements or error message
+    """
+    # Separate courses with and without grades
+    graded_courses = [course for course in courses if 'grade' in course and course['grade']]
+    ungraded_courses = [course for course in courses if 'grade' not in course or not course['grade']]
+    
+    # Calculate total credits
+    total_credits = sum(course['credits'] for course in courses)
+    
+    # Calculate current total grade points
+    current_grade_points = current_gpa * sum(course['credits'] for course in graded_courses)
+    
+    # Calculate total grade points required for desired GPA
+    total_grade_points_required = desired_gpa * total_credits
+    
+    # Calculate additional grade points needed
+    additional_grade_points = total_grade_points_required - current_grade_points
+    
+    if additional_grade_points <= 0:
+        return "The desired GPA is lower than or equal to the current GPA. No changes are needed."
+    
+    # Prepare results for ungraded courses
+    course_requirements = []
+    remaining_points = additional_grade_points
+    
+    for course in ungraded_courses:
+        # Hypothetical calculation of grade requirements
+        max_possible_grade_point = 4.0  # Aim for highest possible grade
+        min_possible_grade_point = max(
+            letter_to_grade_point('C'),  # Minimum reasonable grade
+            (remaining_points / course['credits']) + letter_to_grade_point('C')
+        )
+        
+        # Adjust remaining points
+        remaining_points -= (max_possible_grade_point - min_possible_grade_point) * course['credits']
+        
+        course_requirements.append({
+            "name": course['name'],
+            "credits": course['credits'],
+            "lowest_required_grade": grade_point_to_letter(min_possible_grade_point),
+            "highest_required_grade": grade_point_to_letter(max_possible_grade_point)
+        })
+    
+    return {
+        "current_gpa": current_gpa,
+        "desired_gpa": desired_gpa,
+        "course_requirements": course_requirements
+    }
+
+
+@app.route('/calculate', methods=['POST'])
+def calculate_grades_api():
+    data = request.json
+    
+    # Extract required data
+    courses = data.get('courses', [])
+    current_gpa = data.get('current_gpa', 0)
+    desired_gpa = data.get('desired_gpa', 0)
+    
+    # Validate input
+    if not courses or current_gpa <= 0 or desired_gpa <= 0:
+        return jsonify({"error": "Invalid input data"}), 400
+    
+    try:
+        # Calculate grade requirements
+        result = calculate_grade_requirements(
+            courses, 
+            current_gpa, 
+            desired_gpa
+        )
+        
+        return jsonify(result)
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+##########################################################################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Initialize the database and create tables
 with app.app_context():

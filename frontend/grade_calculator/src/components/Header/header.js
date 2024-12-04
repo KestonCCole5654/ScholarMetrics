@@ -15,6 +15,8 @@ export function Header() {
     setIsLoggedIn(!!token);
   }, []);
 
+
+  
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
