@@ -77,7 +77,7 @@ export default function SubscriptionPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-b  text-white px-4 py-8 md:px-6 md:py-12">
+    <div className="min-h-screen text-left bg-gradient-to-b  text-white px-4 py-8 md:px-6 md:py-12">
       <div className="max-w-4xl mx-auto space-y-8">
         <header className="text-center">
           <h1 className="text-3xl font-bold mb-2">Choose Your Plan</h1>

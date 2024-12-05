@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import UploadSection from '../module_pg/UploadSection/uploadsection';
 import ScaleModal from '../scale/scale';
+import GPAExplanation from '../../pages/gpaExplanation/page';
 
 export default function GPACalculatorComponent() {
     const [courses, setCourses] = useState([{ name: "", credits: 0, grade: "" }]);
@@ -171,6 +172,7 @@ export default function GPACalculatorComponent() {
                     </button>
                 </div>
             </div>
+
             <div className="bg-gray-800 rounded-lg p-4 md:p-6">
                 <h2 className="text-xl md:text-1xl font-semibold mb-4">Results Report</h2>
                 {courses.some((course) => course.name || course.credits || course.grade) ? (
@@ -213,6 +215,12 @@ export default function GPACalculatorComponent() {
                     onSave={handleSaveScale}
                     currentScale={gpaScale}
                 />
+           
+                
+            </div>
+
+            <div>
+                <GPAExplanation />
             </div>
         </div>
     )
