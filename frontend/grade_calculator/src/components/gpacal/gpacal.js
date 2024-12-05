@@ -3,6 +3,7 @@ import { Plus, Trash2 } from 'lucide-react';
 import { useState } from "react";
 import axios from "axios";
 import calculatorTabs from '../Tabs/tabs';
+import UploadSection from '../module_pg/UploadSection/uploadsection';
 
 export default function GPACalculatorComponent() {
     const [courses, setCourses] = useState([{ name: "", credits: 0, grade: "" }]);
@@ -53,8 +54,14 @@ export default function GPACalculatorComponent() {
 
     return (
         <div>
-          
+            <div>
+                <UploadSection/>
+            </div>
+            <div>
+                or 
+            </div>
 
+           
             {error && (
                 <div className="bg-red-500 text-white p-4 rounded">
                     <p>Error: {error}</p>

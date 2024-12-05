@@ -32,7 +32,7 @@ const CalculatorTabs = () => {
             onClick={() => setActiveTab('improvement')}
             className={`${tabStyle('improvement')} border-t border-b border-r border-gray-700 rounded-r-lg`}
           >
-            GPA Improvement Plan
+            GPA Grades Prediction 
           </button>
         </div>
       </div>

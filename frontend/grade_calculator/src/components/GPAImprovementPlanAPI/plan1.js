@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Plus, Trash2 } from 'lucide-react';
 import GPAImprovementPlan from '../GPAImprovementPlan/plan';
+import UploadSection from '../module_pg/UploadSection/uploadsection';
 
 const GPAImprovementPlanAPI = ({
   apiUrl = 'http://localhost:5000/calculate'
@@ -53,6 +54,15 @@ const GPAImprovementPlanAPI = ({
 
   return (
     <div >
+
+      <div>
+        <UploadSection />
+      </div>
+      <div>
+        or
+      </div>
+
+
       <div className="p-4 md:p-6">
         <h1 className="text-xl md:text-1xl font-semibold text-left mb-5">Enter Your Modules</h1>
 
@@ -108,7 +118,7 @@ const GPAImprovementPlanAPI = ({
           <div className="bg-gray-800">
             <div className="space-y-4">
               {courses.map((course, index) => (
-                
+
                 <div key={index} className="flex flex-col md:flex-row gap-4 pb-4 border-b border-gray-700 last:border-b-0">
                   <input
                     type="text"
@@ -118,7 +128,7 @@ const GPAImprovementPlanAPI = ({
                     className="flex-grow bg-gray-700 text-white p-2 rounded border border-gray-600"
                     required
                   />
-                    
+
                   <input
                     type="number"
                     placeholder="Credits"
@@ -127,7 +137,7 @@ const GPAImprovementPlanAPI = ({
                     className="w-full md:w-24 bg-gray-700 text-white p-2 rounded border border-gray-600"
                     required
                   />
-                  
+
                   <button
                     type="button"
                     onClick={() => removeCourse(index)}
