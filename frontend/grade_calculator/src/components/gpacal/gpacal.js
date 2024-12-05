@@ -3,7 +3,7 @@ import { Plus, Trash2 } from 'lucide-react';
 import { useState } from "react";
 import axios from "axios";
 import UploadSection from '../module_pg/UploadSection/uploadsection';
-import ScaleModal from '../../pages/scale/scale';
+import ScaleModal from '../scale/scale';
 
 export default function GPACalculatorComponent() {
     const [courses, setCourses] = useState([{ name: "", credits: 0, grade: "" }]);

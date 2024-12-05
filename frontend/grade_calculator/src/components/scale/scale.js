@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Trash2, Plus, ChevronDown } from 'lucide-react';
 
 const gradeOptions = [
@@ -9,8 +9,14 @@ const gradeOptions = [
   'F'
 ];
 
-const ScaleModal = ({ isOpen, onClose, onSave, currentScale }) => {
+const ScaleModal = ({ isOpen, onClose, onSave, currentScale, currentScaleName }) => {
   const [customScale, setCustomScale] = useState([...currentScale]);
+  const [scaleName, setScaleName] = useState(currentScaleName || "");
+
+  useEffect(() => {
+    setCustomScale([...currentScale]);
+    setScaleName(currentScaleName || "");
+  }, [currentScale, currentScaleName]);
 
   const updateGrade = (index, field, value) => {
     const updatedScale = customScale.map((entry, i) =>
@@ -27,12 +33,34 @@ const ScaleModal = ({ isOpen, onClose, onSave, currentScale }) => {
     setCustomScale([...customScale, { grade: gradeOptions[0], value: "" }]);
   };
 
+  const handleSave = () => {
+    if (scaleName.trim() === "") {
+      alert("Please enter a name for your GPA scale.");
+      return;
+    }
+    onSave({ name: scaleName, scale: customScale });
+    onClose();
+  };
+
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
       <div className="bg-gray-800 text-white w-full max-w-lg p-4 sm:p-6 rounded-lg max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Edit GPA Scale</h2>
+        <div className="mb-4">
+          <label htmlFor="scaleName" className="block text-sm font-medium text-gray-400 mb-1">
+            Scale Name
+          </label>
+          <input
+            type="text"
+            id="scaleName"
+            value={scaleName}
+            onChange={(e) => setScaleName(e.target.value)}
+            placeholder="Enter scale name"
+            className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 text-sm"
+          />
+        </div>
         <p className="text-gray-400 mb-4 text-sm sm:text-base">Adjust your GPA scale values below:</p>
         <div className="space-y-4">
           {customScale.map((entry, index) => (
@@ -82,10 +110,7 @@ const ScaleModal = ({ isOpen, onClose, onSave, currentScale }) => {
             Cancel
           </button>
           <button
-            onClick={() => {
-              onSave(customScale);
-              onClose();
-            }}
+            onClick={handleSave}
             className="bg-orange-500 text-black px-4 py-2 rounded hover:bg-orange-600 w-full sm:w-auto"
           >
             Save

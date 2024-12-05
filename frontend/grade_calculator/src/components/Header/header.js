@@ -105,6 +105,7 @@ export function Header() {
             <a href="/calculators" className="text-gray-300 hover:text-orange-500">Calculators</a>
             <a href="/reports" className="text-gray-300 hover:text-orange-500">Reports</a>
             <a href="/about" className="text-gray-300 hover:text-orange-500">About</a>
+            <a href="/pricing" className="text-gray-300 hover:text-orange-500">Pricing</a>
             <a href="/contact" className="text-gray-300 hover:text-orange-500">Contact</a>
           </nav>
 

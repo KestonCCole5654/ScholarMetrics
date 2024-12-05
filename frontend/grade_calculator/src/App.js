@@ -11,7 +11,9 @@ import Calculators from './pages/calculators/calculators';
 import Poster from './pages/poster/poster';
 import ContactForm from './pages/contact/contact';
 import About from './pages/about/about';
-import scale from './pages/scale/scale';
+import SubscriptionPage from './components/Subscription/pricing';
+import PaymentDetailsPage from './components/paymentdetails/page';
+
 
 
 function App() {
@@ -33,7 +35,9 @@ function App() {
           <Route path="calculators" element={<Calculators />} /> 
           <Route path="contact" element={<ContactForm />} /> 
           <Route path="about" element={<About />} /> 
-          <Route path="scale" element={<scale />} /> 
+          <Route path="pricing" element={<SubscriptionPage />} /> 
+          <Route path="page" element={<PaymentDetailsPage />} /> 
+          
         </Route>
       </Routes>
     </Router>
