@@ -11,6 +11,7 @@ import Calculators from './pages/calculators/calculators';
 import Poster from './pages/poster/poster';
 import ContactForm from './pages/contact/contact';
 import About from './pages/about/about';
+import scale from './pages/scale/scale';
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="calculators" element={<Calculators />} /> 
           <Route path="contact" element={<ContactForm />} /> 
           <Route path="about" element={<About />} /> 
+          <Route path="scale" element={<scale />} /> 
         </Route>
       </Routes>
     </Router>

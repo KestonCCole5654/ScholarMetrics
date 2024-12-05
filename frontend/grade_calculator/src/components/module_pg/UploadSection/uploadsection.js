@@ -17,11 +17,13 @@ export default function UploadSection({
 
   return (
     <div className="w-full  mx-auto bg-gray-800 ">
+      
       <div className="p-6">
         <h2 className="text-2xl font-semibold text-white mb-2">Upload Course Outline</h2>
         <p className="text-gray-400 mb-6">
           Upload your course outline in CSV or TXT format
         </p>
+        
         <div className="space-y-6">
           <div
             {...getRootProps()}
@@ -69,6 +71,7 @@ export default function UploadSection({
               <p className="text-sm text-green-300">File uploaded successfully!</p>
             </div>
           )}
+
           <div className="bg-yellow-900/20 border border-yellow-800 rounded-lg p-4 flex items-start">
             <AlertCircle className="h-5 w-5 text-yellow-400 mr-3 mt-0.5" />
             <div>
@@ -76,6 +79,7 @@ export default function UploadSection({
               <p className="text-sm text-yellow-300">This feature will be available shortly.</p>
             </div>
           </div>
+
         </div>
       </div>
     </div>

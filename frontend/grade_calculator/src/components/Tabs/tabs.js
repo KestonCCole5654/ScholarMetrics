@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import GPAImprovementPlanAPI from '../GPAImprovementPlanAPI/plan1';
-import GPAImprovementPlan from '../GPAImprovementPlan/plan';
 import GPACalculatorComponent from '../gpacal/gpacal';
 
 const CalculatorTabs = () => {

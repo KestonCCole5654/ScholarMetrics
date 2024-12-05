@@ -2,19 +2,25 @@ import React from 'react'
 import { Plus, Trash2 } from 'lucide-react';
 import { useState } from "react";
 import axios from "axios";
-import calculatorTabs from '../Tabs/tabs';
 import UploadSection from '../module_pg/UploadSection/uploadsection';
+import ScaleModal from '../../pages/scale/scale';
 
 export default function GPACalculatorComponent() {
     const [courses, setCourses] = useState([{ name: "", credits: 0, grade: "" }]);
     const [gpa, setGPA] = useState(null);
     const [error, setError] = useState(null);
     const [gpaScale, setGpaScale] = useState("4.0");
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const apiUrl = "http://localhost:5000"; // Adjust this for production
 
 
     const addCourse = () => {
         setCourses([...courses, { name: "", credits: 0, grade: "" }]);
+    };
+
+
+    const handleSaveScale = (newScale) => {
+        setGpaScale(newScale);
     };
 
     const updateCourse = (index, field, value) => {
@@ -55,13 +61,13 @@ export default function GPACalculatorComponent() {
     return (
         <div>
             <div>
-                <UploadSection/>
+                <UploadSection />
             </div>
             <div>
-                or 
+                or
             </div>
 
-           
+
             {error && (
                 <div className="bg-red-500 text-white p-4 rounded">
                     <p>Error: {error}</p>
@@ -76,18 +82,33 @@ export default function GPACalculatorComponent() {
                     {courses.map((course, index) => (
                         <div key={index} className="space-y-3 pb-4 border-b border-gray-700 last:border-0">
                             <div className="space-y-2">
-                                <div>
-                                    <label className="block text-gray-400   mb-3 text-left ">GPA Scale</label>
-                                    <select
-                                        value={gpaScale}
-                                        onChange={(e) => setGpaScale(e.target.value)}
-                                        className="w-full bg-gray-700 text-white p-2 rounded border mb-5 border-gray-600"
-                                    >
-                                        <option value="4.0">4.0 scale</option>
-                                        <option value="4.3">4.3 scale</option>
-                                        <option value="5.0">5.0 scale</option>
-                                    </select>
+
+                                <div className="flex flex-row  gap-4 items-center">
+                                    <div className="flex-grow">
+                                        <label className="block text-gray-400 mb-2 text-left">GPA Scale</label>
+                                        <select
+                                            value={gpaScale}
+                                            onChange={(e) => setGpaScale(e.target.value)}
+                                            className="w-full bg-gray-700 text-white p-2 rounded border border-gray-600"
+                                        >
+                                            <option value="4.0">4.0 scale</option>
+                                            <option value="4.3">4.3 scale</option>
+                                            <option value="5.0">5.0 scale</option>
+                                        </select>
+                                    </div>
+                                    <div className='flex flex-row pt-6'>
+                                        <button className=" text-gray-400 font-bold py-5 px-4 rounded hover:text-orange-500"
+                                            onClick={() => setIsModalOpen(true)}
+                                        >
+
+                                            Edit Scale...
+
+                                        </button>
+
+                                    </div>
+
                                 </div>
+
                                 <label className=" block text-gray-400 text-left ">Course Name</label>
                                 <input
                                     type="text"
@@ -185,6 +206,13 @@ export default function GPACalculatorComponent() {
                 ) : (
                     <p className="text-gray-400">No courses added yet.</p>
                 )}
+                {/* Modal */}
+                <ScaleModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    onSave={handleSaveScale}
+                    currentScale={gpaScale}
+                />
             </div>
         </div>
     )

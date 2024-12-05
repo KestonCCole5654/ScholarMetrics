@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import GPAImprovementPlanAPI from "../../components/GPAImprovementPlanAPI/plan1";
-import GPACalculatorComponent from "../../components/gpacal/gpacal";
 import CalculatorTabs from "../../components/Tabs/tabs";
 
 
