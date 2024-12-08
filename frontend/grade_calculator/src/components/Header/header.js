@@ -164,7 +164,7 @@ export function Header() {
           <a href="/calculators" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Calculators</a>
           <a href="/reports" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Reports</a>
           <a href="/about" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">About</a>
-          <a href="/pricing" className="text-gray-300 hover:text-orange-500">Pricing</a>
+          <a href="/pricing" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Pricing</a>
           <a href="/contact" className="block px-4 py-2 text-sm text-gray-300 hover:bg-gray-700">Contact</a>
           {isLoggedIn ? (
             <>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Upload, FileText, AlertCircle } from 'lucide-react'
+import { Upload, FileText, AlertCircle, Crown } from 'lucide-react'
 import { useDropzone } from "react-dropzone"
 
 export default function UploadSection({
@@ -16,26 +16,30 @@ export default function UploadSection({
   })
 
   return (
-    <div className="w-full  mx-auto bg-gray-800 ">
-      
+    <div className="w-full mx-auto bg-gray-800 relative">
+      <div className="absolute top-2 right-2 sm:top-4 sm:right-4">
+        <div className="bg-gradient-to-r from-purple-600 to-pink-500 text-white text-xs font-bold px-2 py-1 sm:px-3 sm:py-1 rounded-full flex items-center space-x-1">
+          <Crown className="w-3 h-3 sm:w-4 sm:h-4" />
+          <span className="text-[10px] sm:text-xs">Premium Feature</span>
+        </div>
+      </div>
+
       <div className="p-6">
-        <h2 className="text-2xl font-semibold text-white mb-2">Upload Course Outline</h2>
-        <p className="text-gray-400 mb-6">
-          Upload your course outline in CSV or TXT format
+        <h2 className="text-2xl font-semibold text-left text-white mb-2">Upload Outline</h2>
+        <p className="text-gray-400 text-left mb-6">
+          Upload your outline in supported PDF Format
         </p>
-        
+
         <div className="space-y-6">
           <div
             {...getRootProps()}
-            className={`border-2 border-dashed rounded-lg p-8 h-64 flex flex-col items-center justify-center text-center space-y-4 transition-colors duration-200 cursor-pointer ${
-              isDragActive ? "border-orange-500 bg-orange-500/10" : "border-gray-600 hover:border-orange-500 hover:bg-orange-500/5"
-            }`}
+            className={`border-2 border-dashed rounded-lg p-8 h-64 flex flex-col items-center justify-center text-center space-y-4 transition-colors duration-200 cursor-pointer ${isDragActive ? "border-orange-500 bg-orange-500/10" : "border-gray-600 hover:border-orange-500 hover:bg-orange-500/5"
+              }`}
           >
             <input {...getInputProps()} />
             <Upload
-              className={`w-12 h-12 ${
-                isDragActive ? "text-orange-500" : "text-gray-400"
-              }`}
+              className={`w-12 h-12 ${isDragActive ? "text-orange-500" : "text-gray-400"
+                }`}
             />
             <div className="space-y-2">
               <p className="text-gray-300 text-lg">
@@ -45,7 +49,7 @@ export default function UploadSection({
                 </span>{" "}
                 to upload
               </p>
-              <p className="text-sm text-gray-500">Supported formats: CSV, TXT</p>
+              <p className="text-sm text-gray-500">Supported format: PDF</p>
             </div>
           </div>
           {file && (
@@ -76,7 +80,7 @@ export default function UploadSection({
             <AlertCircle className="h-5 w-5 text-yellow-400 mr-3 mt-0.5" />
             <div>
               <h3 className="text-sm text-left font-medium text-yellow-400">Coming Soon</h3>
-              <p className="text-sm text-yellow-300">This feature will be available shortly.</p>
+              <p className="text-sm text-left text-yellow-300">This premium feature will be available shortly.</p>
             </div>
           </div>
 
@@ -85,3 +89,4 @@ export default function UploadSection({
     </div>
   )
 }
+

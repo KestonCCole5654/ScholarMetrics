@@ -1,8 +1,28 @@
 import React, { useState } from "react";
-import { Trash2,Plus } from "lucide-react";
+import { Trash2, Plus } from "lucide-react";
+import axios from "axios";
+import ScaleModal from "../../scale/scale";
 
-export default function AssessmentForm({ assessments, setAssessments, finalGrade, setFinalGrade }) {
+
+
+
+
+
+export default function AssessmentForm() {
+    const [assessments, setAssessments] = useState([{ name: "", weight: 0, grade: "" }]);
+    const [finalGrade, setFinalGrade] = useState(null);
     const [error, setError] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [gpaScale, setGpaScale] = useState(() => {
+        // Load GPA scale from sessionStorage or default to ['4.0', '4.3', '5.0']
+        const storedScale = sessionStorage.getItem('gpaScale');
+        return storedScale ? JSON.parse(storedScale) : ['4.0', '4.3', '5.0'];
+    });
+
+    const handleSaveScale = (newScale) => {
+        setGpaScale(newScale); // Update the scale state
+        setIsModalOpen(false);  // Close the modal after saving
+    };
 
     const addAssessment = () => {
         setAssessments([...assessments, { name: "", weight: 0, grade: "" }]);
@@ -11,7 +31,10 @@ export default function AssessmentForm({ assessments, setAssessments, finalGrade
     const updateAssessment = (index, field, value) => {
         const updatedAssessments = assessments.map((assessment, i) => {
             if (i === index) {
-                return { ...assessment, [field]: field === "name" ? value : parseFloat(value) || 0 };
+                return {
+                    ...assessment,
+                    [field]: field === "name" ? value : parseFloat(value) || 0
+                };
             }
             return assessment;
         });
@@ -26,31 +49,48 @@ export default function AssessmentForm({ assessments, setAssessments, finalGrade
         setError(null);
         setFinalGrade(null);
 
+        // Validate total weight
+        const totalWeight = assessments.reduce((sum, assessment) => sum + assessment.weight, 0);
+        if (totalWeight !== 100) {
+            setError(`Total weight must be 100%. Current total: ${totalWeight}%`);
+            return;
+        }
+
         try {
-            const response = await fetch('http://localhost:5000/calculate-grade', {
-                method: 'POST',
+            const requestData = {
+                assessments: assessments.map(assessment => ({
+                    name: assessment.name,
+                    weight: assessment.weight
+                })),
+                weight: 100,
+                grades: assessments.map(assessment => ({
+                    grade: assessment.grade
+                }))
+            };
+
+            const response = await axios.post('http://localhost:5000/api/moduleCalculation', requestData, {
                 headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ assessments }),
+                    'Content-Type': 'application/json'
+                }
             });
 
-            const data = await response.json();
+            const data = response.data;
 
-            if (response.ok) {
-                setFinalGrade(`${data.final_grade}%`); // Add the percentage symbol here
+            if (response.status === 200) {
+                setFinalGrade(`${data.finalGrade.toFixed(2)}%`);
             } else {
                 setError(data.error || "An error occurred while calculating the grade.");
             }
         } catch (error) {
-            setError("Failed to connect to the server.");
+            console.error("Calculation error:", error);
+            setError(error.response?.data?.error || "Failed to connect to the server.");
         }
     };
 
     return (
         <div className="bg-gray-800 rounded-lg p-4 md:p-6 space-y-6">
-            <h2 className="text-xl md:text-2xl font-semibold">Module Assessments</h2>
-            <p className="text-gray-400 mb-6 text-sm md:text-base">
+            <h2 className="text-xl md:text-2xl text-left font-semibold">Module Assessments</h2>
+            <p className="text-gray-400 mb-6 text-left text-sm md:text-base">
                 Add your assessments, their weights, and grades.
             </p>
 
@@ -62,18 +102,32 @@ export default function AssessmentForm({ assessments, setAssessments, finalGrade
 
             <div className="space-y-4">
                 {assessments.map((assessment, index) => (
-                    <div key={index} className="space-y-3 pb-4 border-b border-gray-700 last:border-0">
-                        <div className="space-y-2">
-                            <label htmlFor={`assessmentName${index}`} className="text-sm text-gray-400">Assessment Name</label>
-                            <input
-                                id={`assessmentName${index}`}
-                                type="text"
-                                value={assessment.name}
-                                onChange={(e) => updateAssessment(index, "name", e.target.value)}
-                                placeholder="Enter assessment name"
-                                className="bg-gray-700 border border-gray-600 rounded px-3 py-2 w-full text-white"
-                            />
+                    <div key={index} className="space-y-3 pb-4 border-b text-left border-gray-700 last:border-0">
+
+                    <div className="flex  gap-3">
+                            <div className=" flex-1 space-y-2" >
+                            <label htmlFor={`assessmentName${index}`} className="text-sm   text-gray-400">Assessment Name</label>
+                                <input
+                                    id={`assessmentName${index}`}
+                                    type="text"
+                                    value={assessment.name}
+                                    onChange={(e) => updateAssessment(index, "name", e.target.value)}
+                                    placeholder="Enter assessment name"
+                                    className="bg-gray-700 border flex border-gray-600 rounded px-3 py-2 w-full text-white"
+                                />
+                            </div>
+
+                            <div className="flex pt-6 ">
+                                <button
+                                    className="text-gray-400 font-bold py-5 px-4 rounded hover:text-orange-500"
+                                    onClick={() => setIsModalOpen(true)}
+                                >
+                                    Edit Scale...
+                                </button>
+                            </div>
                         </div>
+
+
                         <div className="flex gap-4">
                             <div className="flex-1 space-y-2">
                                 <label htmlFor={`assessmentWeight${index}`} className="text-sm text-gray-400">Weight (%)</label>
@@ -108,7 +162,6 @@ export default function AssessmentForm({ assessments, setAssessments, finalGrade
                 ))}
             </div>
 
-
             <div className="flex flex-col md:flex-row gap-4 mt-6">
                 <button
                     onClick={addAssessment}
@@ -123,7 +176,6 @@ export default function AssessmentForm({ assessments, setAssessments, finalGrade
                     Calculate Grade
                 </button>
             </div>
-
 
             {/* Assessment Summary */}
             <div className="bg-gray-800 rounded-lg p-2 md:p-6">
@@ -148,13 +200,12 @@ export default function AssessmentForm({ assessments, setAssessments, finalGrade
                                 ))}
                                 {finalGrade !== null && (
                                     <tr className="bg-gray-700 font-semibold">
-                                        <td className="px-6 py-4" colSpan="2">Calculated GPA</td>
+                                        <td className="px-6 py-4" colSpan="2">Final Grade</td>
                                         <td className="px-6 py-4">
-                                            <span className="bg-orange-500 text-xl text-white px-4 text-center rounded-sm "> {finalGrade} </span>
+                                            <span className="bg-orange-500 text-xl text-white px-4 text-center rounded-sm"> {finalGrade} </span>
                                         </td>
                                     </tr>
                                 )}
-
                             </tbody>
                         </table>
                     </div>
@@ -162,9 +213,7 @@ export default function AssessmentForm({ assessments, setAssessments, finalGrade
                     <div className="text-center text-gray-400 py-4">No assessments added yet.</div>
                 )}
             </div>
-
-
-
+            {isModalOpen && <ScaleModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveScale} />}
         </div>
     );
 }
