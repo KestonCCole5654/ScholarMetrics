@@ -183,25 +183,25 @@ export default function GPACalculatorComponent() {
                                 </div>
                                 <button
                                     onClick={() => removeCourse(index)}
-                                    className="p-2 rounded-full pt-10   text-white focus:outline-none"
+                                      className="self-end h-10 w-10 flex items-center justify-center text-red-500 hover:text-red-700"
                                 >
-                                    <Trash2 size={16} />
+                                    <Trash2 className="h-5 w-5" />
                                 </button>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                <div className="flex items-center justify-between mt-5">
+                <div className="flex items-center gap-5 mt-5">
                     <button
                         onClick={addCourse}
-                        className="flex items-center justify-center bg-gray-700 text-white py-2 px-4 rounded hover:bg-gray-600"
+                        className="flex items-center justify-center bg-orange-500 text-black  py-2 px-4 rounded hover:bg-orange-600"
                     >
                         <Plus size={16} className="mr-2" /> Add Course
                     </button>
                     <button
                         onClick={calculateGPA}
-                        className="bg-orange-600 text-white py-2 px-4 rounded hover:bg-orange-500"
+                        className="bg-orange-500 text-black  py-2 px-4 rounded hover:bg-orange-600"
                     >
                         Calculate GPA
                     </button>
