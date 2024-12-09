@@ -119,36 +119,50 @@ const GPAImprovementPlanAPI = ({
             <div className="space-y-4">
               {courses.map((course, index) => (
 
-                <div key={index} className="flex flex-col md:flex-row gap-4 pb-4 border-b border-gray-700 last:border-b-0">
-                  <input
-                    type="text"
-                    placeholder="Enter Course Name"
-                    value={course.name}
-                    onChange={(e) => updateCourse(index, 'name', e.target.value)}
-                    className="flex-grow bg-gray-700 text-white p-2 rounded border border-gray-600"
-                    required
-                  />
+                <div key={index} className="flex flex-col md:flex-row gap-4  ">
 
-                  <input
-                    type="number"
-                    placeholder="Credits"
-                    value={course.credits}
-                    onChange={(e) => updateCourse(index, 'credits', Number(e.target.value))}
-                    className="w-full md:w-24 bg-gray-700 text-white p-2 rounded border border-gray-600"
-                    required
-                  />
+                  <div className='flex-1 space-y-2' >
+                    <label className="text-gray-400 block text-left">Course Name</label>
+                      <input
+                        type="text"
+                        placeholder="Enter Course Name"
+                        value={course.name}
+                        onChange={(e) => updateCourse(index, 'name', e.target.value)}
+                        className="bg-gray-700 border border-gray-600 rounded px-3 py-2 w-full text-white"
+                        required
+                      />
+                  </div>
+                
+          
 
+                  <div className='flex-1 space-y-2' >
+                    <label className="text-gray-400 block text-left">Credits</label>
+                      <input
+                        type="number"
+                        placeholder="Credits"
+                        value={course.credits || " "}
+                        onChange={(e) => updateCourse(index, 'credits', Number(e.target.value))}
+                        className="bg-gray-700 border border-gray-600 rounded px-3 py-2 w-full text-white"
+                        required
+                      />
+                  </div>
+                  
                   <button
-                    type="button"
                     onClick={() => removeCourse(index)}
-                    className="text-red-500 hover:text-red-700 p-2"
+                    className="self-end h-10 w-10 flex items-center justify-center text-red-500 hover:text-red-700"
                   >
-                    <Trash2 size={20} />
+                     <Trash2 className="h-5 w-5" />
                   </button>
+
+
+                 
+                  
+
                 </div>
               ))}
-              <div className="flex flex-col md:flex-row gap-4 mt-6" >
 
+
+              <div className="flex flex-col md:flex-row gap-4 mt-6" >
                 <button
                   type="button"
                   onClick={addCourseRow}

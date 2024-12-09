@@ -3,7 +3,7 @@ import { Plus, Trash2 } from 'lucide-react';
 import axios from 'axios';
 import UploadSection from '../module_pg/UploadSection/uploadsection';
 import ScaleModal from '../scale/scale';
-import GpaReport from '../gpaReport/report';
+import GpaReport from '../Reports/gpaReport';
 
 export default function GPACalculatorComponent() {
     const [courses, setCourses] = useState([{ name: "", credits: 0, grade: "" }]);
@@ -192,7 +192,7 @@ export default function GPACalculatorComponent() {
                     ))}
                 </div>
 
-                <div className="flex items-center gap-5 mt-5">
+                <div className="flex flex-col md:flex-row gap-4 mt-6">
                     <button
                         onClick={addCourse}
                         className="flex items-center justify-center bg-orange-500 text-black  py-2 px-4 rounded hover:bg-orange-600"
@@ -217,6 +217,8 @@ export default function GPACalculatorComponent() {
                     />
                 </div>
             )}
+
+
 
             {isModalOpen && <ScaleModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveScale} />}
         </div>

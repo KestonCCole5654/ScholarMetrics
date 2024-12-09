@@ -2,26 +2,22 @@ import React, { useState } from "react";
 import { Trash2, Plus } from "lucide-react";
 import axios from "axios";
 import ScaleModal from "../../scale/scale";
-
-
-
-
-
+import AssessmentReport from "../../Reports/moduleReport";
 
 export default function AssessmentForm() {
+    const [moduleName, setModuleName] = useState('');
     const [assessments, setAssessments] = useState([{ name: "", weight: 0, grade: "" }]);
     const [finalGrade, setFinalGrade] = useState(null);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [gpaScale, setGpaScale] = useState(() => {
-        // Load GPA scale from sessionStorage or default to ['4.0', '4.3', '5.0']
         const storedScale = sessionStorage.getItem('gpaScale');
         return storedScale ? JSON.parse(storedScale) : ['4.0', '4.3', '5.0'];
     });
 
     const handleSaveScale = (newScale) => {
-        setGpaScale(newScale); // Update the scale state
-        setIsModalOpen(false);  // Close the modal after saving
+        setGpaScale(newScale);
+        setIsModalOpen(false);
     };
 
     const addAssessment = () => {
@@ -94,6 +90,35 @@ export default function AssessmentForm() {
                 Add your assessments, their weights, and grades.
             </p>
 
+            <div className="flex gap-3" >
+                {/* New Module Name Input */}
+                {/* Add a Feature to show the user the amount of credits they have entered so far. */}
+                {/* Show Letter not only grade  */}
+                {/* Show Reports, user will be able to view and load report details in the input fields if the want to edit the reports in the future */}
+                <div className="space-y-2 text-left">
+                    <label htmlFor="moduleName" className="text-sm text-gray-400 text-left">Module Name</label>
+                    <input
+                        id="moduleName"
+                        type="text"
+                        value={moduleName}
+                        onChange={(e) => setModuleName(e.target.value)}
+                        placeholder="Enter module name"
+                        className="bg-gray-700 border border-gray-600 rounded px-3 py-2 w-full text-white"
+                    />
+                </div>
+
+                <div className="flex pt-6">
+                    <button
+                        className="text-gray-400 font-bold py-5 px-4 rounded hover:text-orange-500"
+                        onClick={() => setIsModalOpen(true)}
+                    >
+                        Edit Scale...
+                    </button>
+                </div>
+
+            </div>
+        
+
             {error && (
                 <div className="bg-red-500 text-white p-4 rounded">
                     <p>Error: {error}</p>
@@ -103,10 +128,9 @@ export default function AssessmentForm() {
             <div className="space-y-4">
                 {assessments.map((assessment, index) => (
                     <div key={index} className="space-y-3 pb-4 border-b text-left border-gray-700 last:border-0">
-
-                    <div className="flex  gap-3">
-                            <div className=" flex-1 space-y-2" >
-                            <label htmlFor={`assessmentName${index}`} className="text-sm   text-gray-400">Assessment Name</label>
+                        <div className="flex gap-3">
+                            <div className="flex-1 space-y-2">
+                                <label htmlFor={`assessmentName${index}`} className="text-sm text-gray-400">Assessment Name</label>
                                 <input
                                     id={`assessmentName${index}`}
                                     type="text"
@@ -117,16 +141,8 @@ export default function AssessmentForm() {
                                 />
                             </div>
 
-                            <div className="flex pt-6 ">
-                                <button
-                                    className="text-gray-400 font-bold py-5 px-4 rounded hover:text-orange-500"
-                                    onClick={() => setIsModalOpen(true)}
-                                >
-                                    Edit Scale...
-                                </button>
-                            </div>
+                           
                         </div>
-
 
                         <div className="flex gap-4">
                             <div className="flex-1 space-y-2">
@@ -177,42 +193,15 @@ export default function AssessmentForm() {
                 </button>
             </div>
 
-            {/* Assessment Summary */}
-            <div className="bg-gray-800 rounded-lg p-2 md:p-6">
-                <h2 className="text-xl md:text-2xl font-semibold mb-4">Assessment Summary</h2>
-                {assessments.some((assessment) => assessment.name || assessment.weight || assessment.grade) ? (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left text-gray-300">
-                            <thead className="text-xs uppercase bg-gray-700">
-                                <tr>
-                                    <th scope="col" className="px-6 py-3">Assessment Name</th>
-                                    <th scope="col" className="px-6 py-3">Weight (%)</th>
-                                    <th scope="col" className="px-6 py-3">Grade (%)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {assessments.map((assessment, index) => (
-                                    <tr key={index} className="border-b border-gray-700">
-                                        <td className="px-6 py-4 font-medium">{assessment.name || "Untitled Assessment"}</td>
-                                        <td className="px-6 py-4">{assessment.weight || "N/A"}%</td>
-                                        <td className="px-6 py-4">{assessment.grade || "N/A"}%</td>
-                                    </tr>
-                                ))}
-                                {finalGrade !== null && (
-                                    <tr className="bg-gray-700 font-semibold">
-                                        <td className="px-6 py-4" colSpan="2">Final Grade</td>
-                                        <td className="px-6 py-4">
-                                            <span className="bg-orange-500 text-xl text-white px-4 text-center rounded-sm"> {finalGrade} </span>
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                ) : (
-                    <div className="text-center text-gray-400 py-4">No assessments added yet.</div>
-                )}
-            </div>
+            {finalGrade !== null && (
+                <AssessmentReport
+                    moduleName={moduleName}
+                    assessments={assessments}
+                    finalGrade={finalGrade}
+                    error={error}
+                />
+            )}
+
             {isModalOpen && <ScaleModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onSave={handleSaveScale} />}
         </div>
     );
