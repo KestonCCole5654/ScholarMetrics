@@ -52,9 +52,9 @@ export function GPAScaleTable({ gpaScale = defaultGpaScale, updateGpaScale }) {
                     <td className="py-2">
                       <input
                         type="number"
-                        step="0.1"
+                     
                         value={item.points}
-                        onChange={(e) => handleUpdate(index, 'points', parseFloat(e.target.value))}
+                        onChange={(e) => handleUpdate(index, 'points', (e.target.value))}
                         className="w-full p-1 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                       />
                     </td>

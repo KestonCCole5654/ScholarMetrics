@@ -21,7 +21,7 @@ function App() {
           <Route path='scale' element={<GpaScalePage />} />  
           <Route path='grade-calculator' element={<GradeCalculatorComponent />} />  
           <Route path='blogs' element={<BlogPage />} />  
-          <Route path='raise-gpa' element={<GPAImprovementCalculator />} />  
+          <Route path='raisegpa-calculator' element={<GPAImprovementCalculator />} />  
           <Route path='midterm-calculator' element={<MidtermCalculator />} />  
           <Route path='finalgrade-calculator' element={<FinalGradeCalculator />} />  
         </Route>

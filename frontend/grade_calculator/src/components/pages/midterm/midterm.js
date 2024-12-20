@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { XIcon, ChevronDownIcon, PlusIcon, X, Edit2Icon, ArrowBigRight, Calculator, ArrowRight } from 'lucide-react';
 import { Tabs } from "../../UI/tabs/tabs";
+import { Hero } from '../../UI/hero/hero';
+import { GPAScaleTable } from '../../UI/gpaScale/table';
+
+
 
 function MidtermCalculator() {
 
@@ -100,40 +104,16 @@ function MidtermCalculator() {
 
   return (
     <div className="max-w-6xl mx-auto pt-6 pr-3 pl-3 font-custom bg-blue-50 rounded-lg">
-      <div className='flex items-left bg-blue-100 font-custom p-5 shadow-sm mb-5 rounded-lg'>
-        <div className='flex-grow text-left pr-6'>
-          <h1 className="text-2xl font-bold text-left text-gray-800 mb-4">
-            College/University GPA Calculator
-          </h1>
-          <p className="text-gray-600 text-left mb-4">
-            Calculate your exact GPA using our free online GPA Calculator. Get your GPA instantly by entering the earned grade and credits for each course.
-          </p>
-
-          <button
-            onClick={handleShareClick}
-            className='bg-blue-200 hover:bg-blue-300 mr-5 text-blue-800 px-4 py-2  rounded-md text-sm'
-          >
-            {copied ? 'Copied!' : 'Share URL'}
-          </button>
-        </div>
-
-        <div className='w-1/4'>
-          <img
-            src="/images/image1.jpg"
-            alt="GPA Calculator"
-            className='w-full h-auto rounded-lg'
-          />
-        </div>
-      </div>
-
-
-
-
-      <div className="flex space-x-6">
+      <Hero />
+      
+      <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
+        {/* Main Table Section */}
         <div className="flex-grow font-custom">
-        <div>
-                        <h1 className='text-2xl font-semibold text-gray-800 text-left mb-5 mt-5'>Midterm Calculator</h1>
-                    </div>
+
+          <div>
+            <h1 className='text-2xl font-semibold text-gray-800 text-left mb-5 mt-5'>Midterm Calculator</h1>
+          </div>
+
           {/* Main Table Section */}
           <div className="relative font-custom">
             <table className="w-full table-auto border-collapse">
@@ -227,91 +207,15 @@ function MidtermCalculator() {
             </div>
           </div>
 
-      
+
         </div>
-            {/* GPA Scale Section */}
-            <div className="w-64 bg-white rounded-lg shadow-sm font-custom p-4 self-start">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-xl font-semibold text-gray-800">GPA Scale</h3>
-            </div>
-            <table className="w-full">
-              <thead>
-                <tr className="text-center text-gray-600 font-custom border-b">
-                  <th className="pb-2">Grade</th>
-                  <th className="pb-2">Points</th>
-                  <th className="pb-2">Range</th>
-                  <th className="pb-2"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {gpaScale.map((item, index) => (
-                  <tr key={index} className="border-b text-center font-custom last:border-b-0">
-                    {editingScale === index ? (
-                      <>
-                        <td className="py-1">
-                          <input
-                            type="text"
-                            value={item.grade}
-                            onChange={(e) => updateGpaScale(index, 'grade', e.target.value)}
-                            className="w-full p-1 border rounded"
-                          />
-                        </td>
-                        <td className="py-1">
-                          <input
-                            type="number"
-                            step="0.1"
-                            value={item.points}
-                            onChange={(e) => updateGpaScale(index, 'points', parseFloat(e.target.value))}
-                            className="w-full p-1 border rounded"
-                          />
-                        </td>
-                        <td className="py-1 flex">
-                          <input
-                            type="number"
-                            value={item.range.min}
-                            onChange={(e) => updateGpaScale(index, 'min', parseInt(e.target.value))}
-                            className="w-12 p-1 border rounded mr-1"
-                          />
-                          -
-                          <input
-                            type="number"
-                            value={item.range.max}
-                            onChange={(e) => updateGpaScale(index, 'max', parseInt(e.target.value))}
-                            className="w-12 p-1 border rounded ml-1"
-                          />
-                        </td>
-                        <td className="py-1">
-                          <button
-                            onClick={() => setEditingScale(null)}
-                            className="text-green-500 hover:text-green-700"
-                          >
-                            ✓
-                          </button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td className="py-1">{item.grade}</td>
-                        <td className="py-1">{item.points}</td>
-                        <td className="py-1">{`${item.range.min}-${item.range.max}%`}</td>
-                        <td className="py-1">
-                          <button
-                            onClick={() => setEditingScale(index)}
-                            className="text-blue-500 hover:text-blue-700"
-                          >
-                            <Edit2Icon className="w-4 h-4" />
-                          </button>
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+        {/* GPA Scale Table */}
+        <div className="w-full md:w-auto md:flex-none">
+          <GPAScaleTable />
+        </div>
       </div>
 
-      <Tabs/>
+      <Tabs />
 
       <div className='flex flex-col mt-11 text-left font-custom '>
         <h1 className="text-3xl font-custom font-bold  pt-5 text-left text-gray-800 mb-4">
