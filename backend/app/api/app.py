@@ -7,6 +7,7 @@ from routes.authRoutes import auth
 from config import Config
 from routes.gpa import gpaBp
 from routes.module import moduleBp
+from routes.gpaPrediction import gpaPrediction_Bp
 
 # Load environment variables from .env file
 load_dotenv()
@@ -32,6 +33,7 @@ def health_check():
 # Registe Blueprints for calculation of gpa
 app.register_blueprint(gpaBp, url_prefix='/api')
 app.register_blueprint(moduleBp, url_prefix='/api')
+app.register_blueprint(gpaPrediction_Bp, url_prefix='/api')
     
 
     

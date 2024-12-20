@@ -4,8 +4,13 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        custom: ['Inter', 'sans-serif'], // Replace 'Roboto' with your font name
+      },
+    },
   },
+  
   plugins: [],
 }
 

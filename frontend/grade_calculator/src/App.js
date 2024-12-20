@@ -1,43 +1,29 @@
 import './App.css'; 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  // Import routing components
-import Login from './components/Login/login';
-import Register from './components/Register/register';
 import Layout from './components/Layout/layout';
-import Home from './pages/home/home';
-import GPACalculator from './pages/gpa_cal/gpa';
-import ModuleGradeCalculator from './pages/module_cal/module';
-import ReportsHistory from './pages/reports/reports';
-import Calculators from './pages/calculators/calculators';
-import Poster from './pages/poster/poster';
-import ContactForm from './pages/contact/contact';
-import About from './pages/about/about';
-import SubscriptionPage from './components/Subscription/pricing';
-import PaymentDetailsPage from './components/paymentdetails/page';
-
-
+import GPACalculatorComponent from './components/pages/gpaCalculator/gpacal';
+import Blogs from './components/pages/Blogs/blogs';
+import GpaScalePage from './pages/gpaScale/scale';
+import GradeCalculatorComponent from './components/pages/gradeCalculator/gradeCalculator';
+import BlogPage from './components/pages/Blogs/blogs';
+import GPAImprovementCalculator from './components/pages/raiseGpa/raisegpa';
+import MidtermCalculator from './components/pages/midterm/midterm';
+import FinalGradeCalculator from './components/pages/finalGrade/grade';
 
 function App() {
   return (
     <Router> {/* Wrapping my application in the Router tag */}
       <Routes> {/* Routes Tag */}
-        {/* Define public routes for login */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route index element={<Poster />} />
-
-        {/* Authenticated Routes wrapped in Layout */}
         <Route path="/" element={<Layout />}>   
           {/* Explicit /home route */}
-          <Route path="home" element={<Home />} /> 
-          <Route path="gpa" element={<GPACalculator />} /> 
-          <Route path="module" element={<ModuleGradeCalculator />} /> 
-          <Route path="reports" element={<ReportsHistory />} /> 
-          <Route path="calculators" element={<Calculators />} /> 
-          <Route path="contact" element={<ContactForm />} /> 
-          <Route path="about" element={<About />} /> 
-          <Route path="pricing" element={<SubscriptionPage />} /> 
-          <Route path="page" element={<PaymentDetailsPage />} /> 
-          
+          <Route path='gpa-calculator' element={<GPACalculatorComponent />} />          
+          <Route path='blogs' element={<Blogs />} />  
+          <Route path='scale' element={<GpaScalePage />} />  
+          <Route path='grade-calculator' element={<GradeCalculatorComponent />} />  
+          <Route path='blogs' element={<BlogPage />} />  
+          <Route path='raise-gpa' element={<GPAImprovementCalculator />} />  
+          <Route path='midterm-calculator' element={<MidtermCalculator />} />  
+          <Route path='finalgrade-calculator' element={<FinalGradeCalculator />} />  
         </Route>
       </Routes>
     </Router>
