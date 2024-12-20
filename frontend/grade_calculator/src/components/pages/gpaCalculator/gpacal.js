@@ -249,7 +249,7 @@ const GPACalculatorComponent = () => {
                               onChange={(e) => updateCourse(semester.id, course.id, 'grade', e.target.value)}
                               className="w-full p-2 rounded outline-none appearance-none bg-inherit"
                             >
-
+                              <option value=""> -- </option>
                               <option value="A+">A+</option>
                               <option value="A">A</option>
                               <option value="A-">A-</option>

@@ -196,46 +196,46 @@ const GPAImprovementCalculator = () => {
 
 
 
-{/* Initial GPA Information */}
-<div className="grid grid-cols-3 gap-4 mb-6 bg-white p-6 rounded-lg shadow-md">
-                    <div>
-                        <label className="block text-gray-700 mb-2">Current GPA</label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            value={currentGPA}
-                            onChange={(e) => setCurrentGPA(e.target.value)}
-                            placeholder="e.g. 2.8"
-                            className="w-full p-2 border rounded"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-gray-700 mb-2">Target GPA</label>
-                        <input
-                            type="number"
-                            step="0.01"
-                            value={targetGPA}
-                            onChange={(e) => setTargetGPA(e.target.value)}
-                            placeholder="e.g. 3.0"
-                            className="w-full p-2 border rounded"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-gray-700 mb-2">Current Credits</label>
-                        <input
-                            type="number"
-                            value={currentCredits}
-                            onChange={(e) => setCurrentCredits(e.target.value)}
-                            placeholder="e.g. 25"
-                            className="w-full p-2 border rounded"
-                        />
-                    </div>
+            {/* Initial GPA Information */}
+            <div className="grid grid-cols-3 gap-4 mb-6 bg-white p-6 rounded-lg shadow-md md:flex-row  ">
+                <div>
+                    <label className="block text-gray-700 mb-2">Current GPA</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        value={currentGPA}
+                        onChange={(e) => setCurrentGPA(e.target.value)}
+                        placeholder="e.g. 2.8"
+                        className="w-full p-2 border rounded"
+                    />
                 </div>
+                <div>
+                    <label className="block text-gray-700 mb-2">Target GPA</label>
+                    <input
+                        type="number"
+                        step="0.01"
+                        value={targetGPA}
+                        onChange={(e) => setTargetGPA(e.target.value)}
+                        placeholder="e.g. 3.0"
+                        className="w-full p-2 border rounded"
+                    />
+                </div>
+                <div>
+                    <label className="block text-gray-700 mb-2">Current Credits</label>
+                    <input
+                        type="number"
+                        value={currentCredits}
+                        onChange={(e) => setCurrentCredits(e.target.value)}
+                        placeholder="e.g. 25"
+                        className="w-full p-2 border rounded"
+                    />
+                </div>
+            </div>
 
             <div className="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-6">
-               
-                
-                
+
+
+
                 {/* Main Table Section */}
                 <div className="flex-grow font-custom">
                     {semesters.map((semester) => (
@@ -259,10 +259,9 @@ const GPAImprovementCalculator = () => {
                                 <table className="w-full border-b">
                                     <thead>
                                         <tr className="text-left text-gray-600">
-                                            <th className="pb-2 font-semibold">Course Name</th>
+                                            <th className="pb-2 font-semibold">Course</th>
                                             <th className="pb-2 font-semibold">Expected Grade</th>
                                             <th className="pb-2 font-semibold">Credits</th>
-                                            <th className="pb-2 font-semibold">Required Grade</th>
                                             <th className="pb-2 w-10"></th>
                                         </tr>
                                     </thead>
@@ -277,7 +276,7 @@ const GPAImprovementCalculator = () => {
                                                         type="text"
                                                         value={course.name}
                                                         onChange={(e) => updateCourse(semester.id, course.id, 'name', e.target.value)}
-                                                        placeholder="Course name"
+                                                        placeholder="Eg. Math "
                                                         className="w-full p-2 bg-inherit outline-none"
                                                     />
                                                 </td>
@@ -309,13 +308,11 @@ const GPAImprovementCalculator = () => {
                                                         type="number"
                                                         value={course.credits}
                                                         onChange={(e) => updateCourse(semester.id, course.id, 'credits', e.target.value)}
-                                                        placeholder="Credits"
+                                                        placeholder="Eg. 4"
                                                         className="w-full p-2 rounded outline-none bg-inherit"
                                                     />
                                                 </td>
-                                                <td className="py-2 text-green-600 font-bold">
-                                                    {course.requiredGrade || '--'}
-                                                </td>
+                                              
                                                 <td className="py-2">
                                                     <button
                                                         onClick={() => removeCourse(semester.id, course.id)}
